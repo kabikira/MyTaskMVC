@@ -11,6 +11,10 @@ enum GitHubError: Error {
 }
 final class GitHubAPI {
     func get (searchTextField: String ,completion: ((Result<[GitHubModel], GitHubError>) -> Void)? = nil) {
+        guard searchTextField.count > 0 else {
+            completion?(.failure(.error))
+            return
+        }
         if let url = URL(string: "https://api.github.com/search/repositories?q=\(searchTextField)&sort=stars") {
             let urlRequest = URLRequest(url: url)
             let session = URLSession.shared
